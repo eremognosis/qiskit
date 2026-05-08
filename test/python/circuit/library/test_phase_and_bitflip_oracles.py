@@ -12,6 +12,7 @@
 
 """Test the phase and bit-flip oracle circuits."""
 
+import os
 import unittest
 import tempfile
 from ddt import ddt, data, unpack
@@ -122,6 +123,7 @@ class TestPhaseOracleAndGate(QiskitTestCase):
         -1 2 3 0
         """
         filename = tempfile.mkstemp(suffix=".dimacs")[1]
+        self.addCleanup(os.remove, filename)
         with open(filename, "w") as file:
             file.write(input_3sat_instance)
         for use_gate in [True, False]:
@@ -215,6 +217,7 @@ class TestBitFlipOracleGate(QiskitTestCase):
         -1 2 3 0
         """
         filename = tempfile.mkstemp(suffix=".dimacs")[1]
+        self.addCleanup(os.remove, filename)
         with open(filename, "w") as file:
             file.write(input_3sat_instance)
         oracle = BitFlipOracleGate.from_dimacs_file(filename)
