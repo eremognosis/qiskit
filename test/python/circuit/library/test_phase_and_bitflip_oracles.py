@@ -14,6 +14,7 @@
 
 import unittest
 import tempfile
+import os
 from ddt import ddt, data, unpack
 from numpy import sqrt, isclose
 
@@ -121,7 +122,9 @@ class TestPhaseOracleAndGate(QiskitTestCase):
         1 -2 -3 0
         -1 2 3 0
         """
-        filename = tempfile.mkstemp(suffix=".dimacs")[1]
+        fd,filename = tempfile.mkstemp(suffix=".dimacs")
+        os.close(fd)
+        self.addCleanup(os.remove, filename)
         with open(filename, "w") as file:
             file.write(input_3sat_instance)
         for use_gate in [True, False]:
